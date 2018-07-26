@@ -55,8 +55,11 @@ class Collagic
 
     /**
      * Constructor
+     *
+     * @param string $name
+     * @param array $modes
      */
-    public function __construct($files = [], $name = '', $modes = [])
+    public function __construct($name = '', $modes = [])
     {
         // Default values
         $this->grid = [];
