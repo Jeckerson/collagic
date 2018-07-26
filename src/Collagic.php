@@ -220,19 +220,18 @@ class Collagic
 
                 $id = $this->getFileKey($files);
                 $image = new Phalcon\Image\Adapter\Imagick($files[$id]);
-                // Horizontal
-                if ($image->getWidth() > $image->getHeight() AND $this->grid[$col][$row + 1] == 0) {
+                if ($image->getWidth() > $image->getHeight() && $this->grid[$col][$row + 1] == 0) {
+                    // Horizontal
                     $width = self::BLOCK_SIZE * 2;
                     $height = self::BLOCK_SIZE;
                     $image->resize($width, $height);
-
-                } // Vertical
-                elseif ($image->getWidth() < $image->getHeight() AND $this->grid[$col + 1][$row] == 0) {
+                } elseif ($image->getWidth() < $image->getHeight() && $this->grid[$col + 1][$row] == 0) {
+                    // Vertical
                     $width = self::BLOCK_SIZE;
                     $height = self::BLOCK_SIZE * 2;
                     $image->resize($width, $height);
-                } // Not enough space
-                else {
+                } else {
+                    // Not enough space
                     continue;
                 }
 
