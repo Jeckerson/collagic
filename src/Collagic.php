@@ -215,7 +215,7 @@ class Collagic
                 }
 
                 if (empty($files)) {
-                    return $this->_save();
+                    return $this->save();
                 }
 
                 $id = $this->getFileKey($files);
@@ -261,7 +261,7 @@ class Collagic
                 }
 
                 if (empty($files)) {
-                    return $this->_save();
+                    return $this->save();
                 }
 
                 $id = $this->getFileKey($files);
@@ -279,7 +279,7 @@ class Collagic
         // Collage Image is fulfilled
         $this->fulfilled = true;
 
-        return $this->_save();
+        return $this->save();
     }
 
     // TODO
@@ -439,7 +439,7 @@ class Collagic
      *
      * @return bool
      */
-    private function _save()
+    private function save()
     {
         return $this->collage->save();
     }
