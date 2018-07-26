@@ -3,7 +3,7 @@
 /**
  * Class Collage
  */
-class Collage
+class Collagic
 {
     const BLOCK_SIZE = 38;
     const COLLAGE_WIDTH = 1140;
