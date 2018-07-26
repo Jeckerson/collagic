@@ -166,7 +166,7 @@ class Collagic
         }
 
         // Shuffle
-        $files = $this->shuffle_assoc($files);
+        $files = $this->shuffleAssoc($files);
 
         // Create new blank Collage (COLLAGE_WIDTH x COLLAGE_HEIGHT)
         $this->collage = new Phalcon\Image\Adapter\Imagick($this->name, self::COLLAGE_WIDTH, self::COLLAGE_HEIGHT);
@@ -204,7 +204,7 @@ class Collagic
 
         // -------------------------------------------------
 
-        $files = $this->shuffle_assoc($files);
+        $files = $this->shuffleAssoc($files);
 
         // Apply Rectangles on the Grid
         foreach ($this->grid as $col => $rows) {
@@ -251,7 +251,7 @@ class Collagic
 
         // -------------------------------------------------
 
-        $files = $this->shuffle_assoc($files);
+        $files = $this->shuffleAssoc($files);
 
         // Apply Squares on the Grid
         foreach ($this->grid as $col => $rows) {
@@ -303,7 +303,7 @@ class Collagic
      * @param array $list
      * @return array
      */
-    public function shuffle_assoc($list)
+    public function shuffleAssoc($list)
     {
         if (!is_array($list)) {
             return $list;
