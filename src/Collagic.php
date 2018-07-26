@@ -1,5 +1,7 @@
 <?php
 
+namespace Collagic;
+
 /**
  * Class Collage
  */
