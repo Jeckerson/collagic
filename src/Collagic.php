@@ -18,42 +18,42 @@ class Collagic
      *
      * @var array
      */
-    var $grid;
+    protected $grid;
 
     /**
      * Collage name
      *
      * @var
      */
-    var $name;
+    protected $name;
 
     /**
      * Image object
      *
      * @var \Phalcon\Image\Adapter\Imagick
      */
-    var $collage;
+    protected $collage;
 
     /**
      * Images array with rows and cols
      *
      * @var
      */
-    var $images;
+    protected $images;
 
     /**
      * Images dimensions
      *
      * @var
      */
-    var $modes;
+    protected $modes;
 
     /**
      * Is collage fulfilled
      *
      * @var bool
      */
-    var $fulfilled;
+    protected $fulfilled;
 
     /**
      * Constructor
