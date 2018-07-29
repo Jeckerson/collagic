@@ -2,6 +2,9 @@
 
 namespace Collagic;
 
+use Imagick;
+use ImagickPixel;
+
 /**
  * Class Collage
  */
@@ -30,7 +33,7 @@ class Collagic
     /**
      * Image object
      *
-     * @var \Phalcon\Image\Adapter\Imagick
+     * @var Imagick
      */
     protected $collage;
 
@@ -154,6 +157,7 @@ class Collagic
     /**
      * @param array $files
      * @return bool
+     * @throws \ImagickException
      */
     public function generate($files)
     {
@@ -169,7 +173,8 @@ class Collagic
         $files = $this->shuffleAssoc($files);
 
         // Create new blank Collage (COLLAGE_WIDTH x COLLAGE_HEIGHT)
-        $this->collage = new Phalcon\Image\Adapter\Imagick($this->name, self::COLLAGE_WIDTH, self::COLLAGE_HEIGHT);
+        $this->collage = new Imagick();
+        $this->collage->newImage(self::COLLAGE_WIDTH, self::COLLAGE_HEIGHT, new ImagickPixel('#000'));
 
         // Primary Modes
         foreach ($this->modes as $mode) {
@@ -179,7 +184,7 @@ class Collagic
                 }
 
                 $id = $this->getFileKey($files);
-                $image = new Phalcon\Image\Adapter\Imagick($files[$id]);
+                $image = new Imagick($files[$id]);
                 $cells = ceil($mode['width'] / self::BLOCK_SIZE);
 
                 // Random row and col
@@ -190,7 +195,7 @@ class Collagic
                     $col = $this->randomCol($mode['height']);
                 }
 
-                $image->resize($mode['width'], $mode['height'], \Phalcon\Image::TENSILE);
+                $image->resizeImage($mode['width'], $mode['height'], Imagick::FILTER_UNDEFINED, 1);
                 $this->setImage($image, $row, $col);
                 $this->savePosition($id, $row, $col, $mode['width'], $mode['height']);
 
@@ -219,17 +224,17 @@ class Collagic
                 }
 
                 $id = $this->getFileKey($files);
-                $image = new Phalcon\Image\Adapter\Imagick($files[$id]);
-                if ($image->getWidth() > $image->getHeight() && $this->grid[$col][$row + 1] == 0) {
+                $image = new Imagick($files[$id]);
+                if ($image->getImageWidth() > $image->getImageHeight() && $this->grid[$col][$row + 1] == 0) {
                     // Horizontal
                     $width = self::BLOCK_SIZE * 2;
                     $height = self::BLOCK_SIZE;
-                    $image->resize($width, $height);
-                } elseif ($image->getWidth() < $image->getHeight() && $this->grid[$col + 1][$row] == 0) {
+                    $image->resizeImage($width, $height, Imagick::FILTER_UNDEFINED, 1);
+                } elseif ($image->getImageWidth() < $image->getImageHeight() && $this->grid[$col + 1][$row] == 0) {
                     // Vertical
                     $width = self::BLOCK_SIZE;
                     $height = self::BLOCK_SIZE * 2;
-                    $image->resize($width, $height);
+                    $image->resizeImage($width, $height, Imagick::FILTER_UNDEFINED, 1);
                 } else {
                     // Not enough space
                     continue;
@@ -239,8 +244,8 @@ class Collagic
                 $this->setImage($image, $row, $col);
 
                 // Fill Grid
-                $rows = ceil($image->getWidth() / self::BLOCK_SIZE);
-                $cols = ceil($image->getHeight() / self::BLOCK_SIZE);
+                $rows = ceil($image->getImageWidth() / self::BLOCK_SIZE);
+                $cols = ceil($image->getImageHeight() / self::BLOCK_SIZE);
                 $this->gridFill($row, $col, $rows, $cols);
 
                 // Free memory
@@ -265,8 +270,8 @@ class Collagic
                 }
 
                 $id = $this->getFileKey($files);
-                $image = new Phalcon\Image\Adapter\Imagick($files[$id]);
-                $image->resize(self::BLOCK_SIZE, self::BLOCK_SIZE);
+                $image = new Imagick($files[$id]);
+                $image->resizeImage(self::BLOCK_SIZE, self::BLOCK_SIZE, Imagick::FILTER_UNDEFINED, 1);
 
                 $this->savePosition($id, $row, $col, self::BLOCK_SIZE, self::BLOCK_SIZE);
                 $this->setImage($image, $row, $col);
@@ -376,7 +381,7 @@ class Collagic
     // -------------------------------------------------
 
     /**
-     * @param \Phalcon\Image\Adapter\Imagick $image
+     * @param Imagick $image
      * @param int $row
      * @param int $col
      * @return void
@@ -387,7 +392,13 @@ class Collagic
         $row = intval($row);
         $col = intval($col);
 
-        $this->collage->watermark($image, $row * self::BLOCK_SIZE, $col * self::BLOCK_SIZE, 100);
+        $this->collage->compositeImage(
+            $image,
+            Imagick::COMPOSITE_OVER,
+            $row * self::BLOCK_SIZE,
+            $col * self::BLOCK_SIZE,
+            100
+        );
     }
 
     // -------------------------------------------------
@@ -441,7 +452,8 @@ class Collagic
      */
     private function save()
     {
-        return $this->collage->save();
+        $this->collage->setImageFormat('jpeg');
+        return $this->collage->writeImage($this->name);
     }
 
     // -------------------------------------------------
