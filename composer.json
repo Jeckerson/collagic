@@ -1,4 +1,7 @@
 {
+    "require": {
+        "symfony/console": "^4.1"
+    },
     "require-dev": {
         "squizlabs/php_codesniffer": "^3.3"
     }
