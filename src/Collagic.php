@@ -287,8 +287,6 @@ class Collagic
         return $this->save();
     }
 
-    // TODO
-
     /**
      * @return void
      */
