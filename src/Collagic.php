@@ -443,19 +443,6 @@ class Collagic
 
     // -------------------------------------------------
 
-    /**
-     * Save Collage into file
-     *
-     * @return bool
-     */
-    private function save()
-    {
-        $this->collage->setImageFormat('jpeg');
-        return $this->collage->writeImage($this->name);
-    }
-
-    // -------------------------------------------------
-
     public function recreate($files)
     {
         // TODO: make it possible!
@@ -469,5 +456,18 @@ class Collagic
     public function getImages()
     {
         return $this->images;
+    }
+
+    // -------------------------------------------------
+
+    /**
+     * Save Collage into file
+     *
+     * @return bool
+     */
+    private function save()
+    {
+        $this->collage->setImageFormat('jpeg');
+        return $this->collage->writeImage($this->name);
     }
 }
