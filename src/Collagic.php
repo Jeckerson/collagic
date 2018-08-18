@@ -379,6 +379,45 @@ class Collagic
     // -------------------------------------------------
 
     /**
+     * @param int $x
+     * @param int $y
+     * @param int $rows
+     * @param null $cols
+     * @return void
+     */
+    public function gridFill($x, $y, $rows, $cols = null)
+    {
+        if ($cols === null) {
+            $cols = $rows;
+        }
+
+        for ($a = $y; $a < ($y + $cols); $a++) {
+            for ($i = $x; $i < ($x + $rows); $i++) {
+                $this->grid[$a][$i] = true;
+            }
+        }
+    }
+
+    // -------------------------------------------------
+
+    public function recreate($files)
+    {
+        // TODO: make it possible!
+    }
+
+    // -------------------------------------------------
+
+    /**
+     * @return array
+     */
+    public function getImages()
+    {
+        return $this->images;
+    }
+
+    // -------------------------------------------------
+
+    /**
      * @param Imagick $image
      * @param int $row
      * @param int $col
@@ -417,45 +456,6 @@ class Collagic
             'width' => $width,
             'height' => $height
         ];
-    }
-
-    // -------------------------------------------------
-
-    /**
-     * @param int $x
-     * @param int $y
-     * @param int $rows
-     * @param null $cols
-     * @return void
-     */
-    public function gridFill($x, $y, $rows, $cols = null)
-    {
-        if ($cols === null) {
-            $cols = $rows;
-        }
-
-        for ($a = $y; $a < ($y + $cols); $a++) {
-            for ($i = $x; $i < ($x + $rows); $i++) {
-                $this->grid[$a][$i] = true;
-            }
-        }
-    }
-
-    // -------------------------------------------------
-
-    public function recreate($files)
-    {
-        // TODO: make it possible!
-    }
-
-    // -------------------------------------------------
-
-    /**
-     * @return array
-     */
-    public function getImages()
-    {
-        return $this->images;
     }
 
     // -------------------------------------------------
