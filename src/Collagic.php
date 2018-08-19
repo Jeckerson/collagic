@@ -102,8 +102,6 @@ class Collagic
         }
     }
 
-    // -------------------------------------------------
-
     /**
      * Get file Name
      *
@@ -113,8 +111,6 @@ class Collagic
     {
         return $this->name;
     }
-
-    // -------------------------------------------------
 
     /**
      * Set file Name
@@ -127,8 +123,6 @@ class Collagic
         $this->name = (string)$name;
     }
 
-    // -------------------------------------------------
-
     /**
      * Get Modes array
      *
@@ -138,8 +132,6 @@ class Collagic
     {
         return $this->modes;
     }
-
-    // -------------------------------------------------
 
     /**
      * Set Modes array
@@ -151,8 +143,6 @@ class Collagic
     {
         $this->modes = (array)$modes;
     }
-
-    // -------------------------------------------------
 
     /**
      * @param array $files
@@ -299,8 +289,6 @@ class Collagic
         }
     }
 
-    // -------------------------------------------------
-
     /**
      * @param array $list
      * @return array
@@ -321,8 +309,6 @@ class Collagic
         return $random;
     }
 
-    // -------------------------------------------------
-
     /**
      * @param array $files
      * @return int
@@ -333,8 +319,6 @@ class Collagic
         return $id;
     }
 
-    // -------------------------------------------------
-
     /**
      * @param int|float $width
      * @return int
@@ -344,8 +328,6 @@ class Collagic
         return mt_rand(0, self::COLLAGE_ROWS - ceil($width / self::BLOCK_SIZE));
     }
 
-    // -------------------------------------------------
-
     /**
      * @param int|float $height
      * @return int
@@ -354,8 +336,6 @@ class Collagic
     {
         return mt_rand(0, self::COLLAGE_COLS - ceil($height / self::BLOCK_SIZE));
     }
-
-    // -------------------------------------------------
 
     /**
      * @param int $cells
@@ -375,8 +355,6 @@ class Collagic
 
         return true;
     }
-
-    // -------------------------------------------------
 
     /**
      * @param int $x
@@ -398,14 +376,10 @@ class Collagic
         }
     }
 
-    // -------------------------------------------------
-
     public function recreate($files)
     {
         // TODO: make it possible!
     }
-
-    // -------------------------------------------------
 
     /**
      * @return array
@@ -414,8 +388,6 @@ class Collagic
     {
         return $this->images;
     }
-
-    // -------------------------------------------------
 
     /**
      * @param Imagick $image
@@ -438,8 +410,6 @@ class Collagic
         );
     }
 
-    // -------------------------------------------------
-
     /**
      * @param int $id
      * @param int $row
@@ -457,8 +427,6 @@ class Collagic
             'height' => $height
         ];
     }
-
-    // -------------------------------------------------
 
     /**
      * Save Collage into file
