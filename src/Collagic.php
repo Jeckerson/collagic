@@ -181,7 +181,7 @@ class Collagic
 
                 $id = $this->getFileKey($files);
                 $image = new Imagick($files[$id]);
-                $cells = ceil($mode['width'] / self::BLOCK_SIZE);
+                $cells = intval(ceil($mode['width'] / self::BLOCK_SIZE));
 
                 // Random row and col
                 $row = $this->randomRow($mode['width']);
