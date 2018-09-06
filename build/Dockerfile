@@ -11,6 +11,8 @@ RUN apk add git \
         php7-simplexml \
         php7-tokenizer \
         php7-xmlwriter \
+        php7-dom \
+        php7-imagick \
         zip
 
 CMD php -S 0.0.0.0:80
