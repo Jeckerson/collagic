@@ -176,7 +176,7 @@ class Collagic
         foreach ($this->modes as $mode) {
             for ($a = 0; $a < $mode['qty']; $a++) {
                 if (empty($files)) {
-                    return $this->collage->save();
+                    return $this->save();
                 }
 
                 $id = $this->getFileKey($files);
