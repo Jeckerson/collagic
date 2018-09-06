@@ -321,8 +321,7 @@ class Collagic
      */
     public function getFileKey($files)
     {
-        $id = current(array_flip($files));
-        return $id;
+        return current(array_flip($files));
     }
 
     /**
