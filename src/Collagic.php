@@ -371,7 +371,7 @@ class Collagic
      */
     public function gridFill($x, $y, $rows, $cols = 0)
     {
-        if ($cols === null) {
+        if ($cols === 0) {
             $cols = $rows;
         }
 
