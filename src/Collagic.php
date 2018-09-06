@@ -74,7 +74,7 @@ class Collagic
 
         // Default values
         $this->grid = [];
-        $this->fulfilled = 0;
+        $this->fulfilled = false;
 
         // Set name
         if ($name != '') {
@@ -240,8 +240,8 @@ class Collagic
                 $this->setImage($image, $row, $col);
 
                 // Fill Grid
-                $rows = ceil($image->getImageWidth() / self::BLOCK_SIZE);
-                $cols = ceil($image->getImageHeight() / self::BLOCK_SIZE);
+                $rows = intval(ceil($image->getImageWidth() / self::BLOCK_SIZE));
+                $cols = intval(ceil($image->getImageHeight() / self::BLOCK_SIZE));
                 $this->gridFill($row, $col, $rows, $cols);
 
                 // Free memory
