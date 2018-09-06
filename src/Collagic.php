@@ -363,13 +363,13 @@ class Collagic
     }
 
     /**
-     * @param int $x
-     * @param int $y
-     * @param int $rows
-     * @param null $cols
+     * @param integer $x
+     * @param integer $y
+     * @param integer $rows
+     * @param integer $cols
      * @return void
      */
-    public function gridFill($x, $y, $rows, $cols = null)
+    public function gridFill($x, $y, $rows, $cols = 0)
     {
         if ($cols === null) {
             $cols = $rows;
