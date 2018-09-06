@@ -66,6 +66,12 @@ class Collagic
      */
     public function __construct($name = '', $modes = [])
     {
+        try {
+            $this->collage = new Imagick();
+        } catch (\ImagickException $e) {
+            exit ($e->getMessage());
+        }
+
         // Default values
         $this->grid = [];
         $this->fulfilled = 0;
@@ -163,7 +169,7 @@ class Collagic
         $files = $this->shuffleAssoc($files);
 
         // Create new blank Collage (COLLAGE_WIDTH x COLLAGE_HEIGHT)
-        $this->collage = new Imagick();
+
         $this->collage->newImage(self::COLLAGE_WIDTH, self::COLLAGE_HEIGHT, new ImagickPixel('#000'));
 
         // Primary Modes
