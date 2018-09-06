@@ -382,11 +382,6 @@ class Collagic
         }
     }
 
-    public function recreate($files)
-    {
-        // TODO: make it possible!
-    }
-
     /**
      * @return array
      */
