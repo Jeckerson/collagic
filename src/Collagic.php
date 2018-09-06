@@ -240,9 +240,9 @@ class Collagic
                 $this->setImage($image, $row, $col);
 
                 // Fill Grid
-                $rows = intval(ceil($image->getImageWidth() / self::BLOCK_SIZE));
-                $cols = intval(ceil($image->getImageHeight() / self::BLOCK_SIZE));
-                $this->gridFill($row, $col, $rows, $cols);
+                $gridRows = intval(ceil($image->getImageWidth() / self::BLOCK_SIZE));
+                $gridCols = intval(ceil($image->getImageHeight() / self::BLOCK_SIZE));
+                $this->gridFill($row, $col, $gridRows, $gridCols);
 
                 // Free memory
                 unset($image, $files[$id]);
