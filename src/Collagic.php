@@ -331,7 +331,7 @@ class Collagic
      */
     public function randomRow($width)
     {
-        return mt_rand(0, self::COLLAGE_ROWS - ceil($width / self::BLOCK_SIZE));
+        return mt_rand(0, self::COLLAGE_ROWS - intval(ceil($width / self::BLOCK_SIZE)));
     }
 
     /**
@@ -340,7 +340,7 @@ class Collagic
      */
     public function randomCol($height)
     {
-        return mt_rand(0, self::COLLAGE_COLS - ceil($height / self::BLOCK_SIZE));
+        return mt_rand(0, self::COLLAGE_COLS - intval(ceil($height / self::BLOCK_SIZE)));
     }
 
     /**
