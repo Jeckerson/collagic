@@ -299,12 +299,8 @@ class Collagic
      * @param array $list
      * @return array
      */
-    public function shuffleAssoc($list)
+    public function shuffleAssoc(array $list)
     {
-        if (!is_array($list)) {
-            return $list;
-        }
-
         $keys = array_keys($list);
         shuffle($keys);
         $random = [];
