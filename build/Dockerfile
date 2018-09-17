@@ -1,7 +1,6 @@
 FROM alpine:3.8
 
-RUN apk update
-RUN apk add git \
+RUN apk update && apk add git \
         php7 \
         php7-xml \
         php7-openssl \
