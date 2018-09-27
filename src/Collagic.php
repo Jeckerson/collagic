@@ -169,7 +169,6 @@ class Collagic
         $files = $this->shuffleAssoc($files);
 
         // Create new blank Collage (COLLAGE_WIDTH x COLLAGE_HEIGHT)
-
         $this->collage->newImage(self::COLLAGE_WIDTH, self::COLLAGE_HEIGHT, new ImagickPixel('#000'));
 
         // Primary Modes
@@ -179,8 +178,6 @@ class Collagic
                     return $this->save();
                 }
 
-                $id = $this->getFileKey($files);
-                $image = new Imagick($files[$id]);
                 $cells = intval(ceil($mode['width'] / self::BLOCK_SIZE));
 
                 // Random row and col
@@ -191,13 +188,16 @@ class Collagic
                     $col = $this->randomCol($mode['height']);
                 }
 
+                $id = $this->getFileKey($files);
+
+                $image = new Imagick($files[$id]);
                 $image->resizeImage($mode['width'], $mode['height'], Imagick::FILTER_UNDEFINED, 1);
+
                 $this->setImage($image, $row, $col);
                 $this->savePosition($id, $row, $col, $mode['width'], $mode['height']);
 
                 // Fill Grid
                 $this->gridFill($row, $col, $cells);
-
                 // Free memory
                 unset($image, $files[$id]);
             }
