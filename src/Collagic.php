@@ -15,6 +15,7 @@ class Collagic
     const COLLAGE_HEIGHT = 418;
     const COLLAGE_ROWS = 30;
     const COLLAGE_COLS = 11;
+    const DEFAULT_NAME = 'collage.jpg';
 
     /**
      * Grid
@@ -77,11 +78,7 @@ class Collagic
         $this->fulfilled = false;
 
         // Set name
-        if ($name != '') {
-            $this->name = $name;
-        } else {
-            $this->name = 'collage.jpg';
-        }
+        $this->setName($name);
 
         // Set modes
         if (!empty($modes)) {
@@ -121,12 +118,12 @@ class Collagic
     /**
      * Set file Name
      *
-     * @param string $name
+     * @param string $name Output file name
      * @return void
      */
     public function setName($name)
     {
-        $this->name = (string)$name;
+        $this->name = (string)$name !== '' ? $name : self::DEFAULT_NAME;
     }
 
     /**
