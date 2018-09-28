@@ -183,7 +183,7 @@ class Collagic
                 // Random row and col
                 $row = $this->randomRow($mode['width']);
                 $col = $this->randomCol($mode['height']);
-                while (!$this->gridFit($cells, $row, $col)) {
+                while (!$this->fitGrid($cells, $row, $col)) {
                     $row = $this->randomRow($mode['width']);
                     $col = $this->randomCol($mode['height']);
                 }
@@ -197,7 +197,7 @@ class Collagic
                 $this->savePosition($id, $row, $col, $mode['width'], $mode['height']);
 
                 // Fill Grid
-                $this->gridFill($row, $col, $cells);
+                $this->fillGrid($row, $col, $cells);
                 // Free memory
                 unset($image, $files[$id]);
             }
@@ -242,7 +242,7 @@ class Collagic
                 // Fill Grid
                 $gridRows = intval(ceil($image->getImageWidth() / self::BLOCK_SIZE));
                 $gridCols = intval(ceil($image->getImageHeight() / self::BLOCK_SIZE));
-                $this->gridFill($row, $col, $gridRows, $gridCols);
+                $this->fillGrid($row, $col, $gridRows, $gridCols);
 
                 // Free memory
                 unset($image, $files[$id]);
@@ -344,7 +344,7 @@ class Collagic
      * @param int $y
      * @return bool
      */
-    public function gridFit($cells, $x, $y)
+    public function fitGrid($cells, $x, $y)
     {
         for ($a = $y; $a < ($y + $cells); $a++) {
             for ($i = $x; $i < ($x + $cells); $i++) {
@@ -364,7 +364,7 @@ class Collagic
      * @param integer $cols
      * @return void
      */
-    public function gridFill($x, $y, $rows, $cols = 0)
+    public function fillGrid($x, $y, $rows, $cols = 0)
     {
         if ($cols === 0) {
             $cols = $rows;
