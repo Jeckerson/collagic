@@ -40,14 +40,14 @@ class Collagic
     /**
      * Images array with rows and cols
      *
-     * @var
+     * @var array
      */
     protected $images;
 
     /**
      * Images dimensions
      *
-     * @var
+     * @var array
      */
     protected $modes;
 
