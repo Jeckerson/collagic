@@ -22,7 +22,7 @@ class Collagic
      *
      * @var array
      */
-    protected $grid;
+    protected $grid = [];
 
     /**
      * Collage name
@@ -43,7 +43,7 @@ class Collagic
      *
      * @var array
      */
-    protected $images;
+    protected $images = [];
 
     /**
      * Images dimensions
@@ -57,7 +57,7 @@ class Collagic
      *
      * @var bool
      */
-    protected $fulfilled;
+    protected $fulfilled = false;
 
     /**
      * Constructor
@@ -72,10 +72,6 @@ class Collagic
         } catch (\ImagickException $e) {
             exit ($e->getMessage());
         }
-
-        // Default values
-        $this->grid = [];
-        $this->fulfilled = false;
 
         // Set name
         $this->setName($name);
