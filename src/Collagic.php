@@ -17,6 +17,10 @@ class Collagic
     const COLLAGE_COLS = 11;
     const DEFAULT_NAME = 'collage.jpg';
 
+    const MODE_KEY_QTY = 'qty';
+    const MODE_KEY_WIDTH = 'width';
+    const MODE_KEY_HEIGHT = 'height';
+
     /**
      * Grid
      *
@@ -59,19 +63,19 @@ class Collagic
      */
     protected $modes = [
         [
-            'qty' => 1,
-            'width' => (self::BLOCK_SIZE * 5),
-            'height' => (self::BLOCK_SIZE * 5)
+            self::MODE_KEY_QTY => 1,
+            self::MODE_KEY_WIDTH => (self::BLOCK_SIZE * 5),
+            self::MODE_KEY_HEIGHT => (self::BLOCK_SIZE * 5)
         ],
         [
-            'qty' => 2,
-            'width' => (self::BLOCK_SIZE * 3),
-            'height' => (self::BLOCK_SIZE * 3)
+            self::MODE_KEY_QTY => 2,
+            self::MODE_KEY_WIDTH => (self::BLOCK_SIZE * 3),
+            self::MODE_KEY_HEIGHT => (self::BLOCK_SIZE * 3)
         ],
         [
-            'qty' => 5,
-            'width' => (self::BLOCK_SIZE * 2),
-            'height' => (self::BLOCK_SIZE * 2)
+            self::MODE_KEY_QTY => 5,
+            self::MODE_KEY_WIDTH => (self::BLOCK_SIZE * 2),
+            self::MODE_KEY_HEIGHT => (self::BLOCK_SIZE * 2)
         ]
     ];
 
@@ -168,23 +172,28 @@ class Collagic
                     return $this->save();
                 }
 
-                $cells = intval(ceil($mode['width'] / self::BLOCK_SIZE));
+                $cells = intval(ceil($mode[self::MODE_KEY_WIDTH] / self::BLOCK_SIZE));
 
                 // Random row and col
-                $row = $this->randomRow($mode['width']);
-                $col = $this->randomCol($mode['height']);
+                $row = $this->randomRow($mode[self::MODE_KEY_WIDTH]);
+                $col = $this->randomCol($mode[self::MODE_KEY_HEIGHT]);
                 while (!$this->fitGrid($cells, $row, $col)) {
-                    $row = $this->randomRow($mode['width']);
-                    $col = $this->randomCol($mode['height']);
+                    $row = $this->randomRow($mode[self::MODE_KEY_WIDTH]);
+                    $col = $this->randomCol($mode[self::MODE_KEY_HEIGHT]);
                 }
 
                 $id = $this->getFileKey($files);
 
                 $image = new Imagick($files[$id]);
-                $image->resizeImage($mode['width'], $mode['height'], Imagick::FILTER_UNDEFINED, 1);
+                $image->resizeImage(
+                    $mode[self::MODE_KEY_WIDTH],
+                    $mode[self::MODE_KEY_HEIGHT],
+                    Imagick::FILTER_UNDEFINED,
+                    1
+                );
 
                 $this->setImage($image, $row, $col);
-                $this->savePosition($id, $row, $col, $mode['width'], $mode['height']);
+                $this->savePosition($id, $row, $col, $mode[self::MODE_KEY_WIDTH], $mode[self::MODE_KEY_HEIGHT]);
 
                 // Fill Grid
                 $this->fillGrid($row, $col, $cells);
@@ -409,8 +418,8 @@ class Collagic
         $this->images[$id] = [
             'row' => $row,
             'col' => $col,
-            'width' => $width,
-            'height' => $height
+            self::MODE_KEY_WIDTH => $width,
+            self::MODE_KEY_HEIGHT => $height
         ];
     }
 
