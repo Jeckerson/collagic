@@ -27,7 +27,7 @@ class Collagic
     /**
      * Collage name
      *
-     * @var
+     * @var string
      */
     protected $name;
 
@@ -46,13 +46,6 @@ class Collagic
     protected $images = [];
 
     /**
-     * Images dimensions
-     *
-     * @var array
-     */
-    protected $modes;
-
-    /**
      * Is collage fulfilled
      *
      * @var bool
@@ -60,12 +53,35 @@ class Collagic
     protected $fulfilled = false;
 
     /**
+     * Images dimensions
+     *
+     * @var array
+     */
+    protected $modes = [
+        [
+            'qty' => 1,
+            'width' => (self::BLOCK_SIZE * 5),
+            'height' => (self::BLOCK_SIZE * 5)
+        ],
+        [
+            'qty' => 2,
+            'width' => (self::BLOCK_SIZE * 3),
+            'height' => (self::BLOCK_SIZE * 3)
+        ],
+        [
+            'qty' => 5,
+            'width' => (self::BLOCK_SIZE * 2),
+            'height' => (self::BLOCK_SIZE * 2)
+        ]
+    ];
+
+    /**
      * Constructor
      *
      * @param string $name
      * @param array $modes
      */
-    public function __construct($name = '', $modes = [])
+    public function __construct($name = '', array $modes = [])
     {
         try {
             $this->collage = new Imagick();
@@ -79,25 +95,6 @@ class Collagic
         // Set modes
         if (!empty($modes)) {
             $this->modes = $modes;
-        } else {
-            // Default Modes
-            $this->modes = [
-                [
-                    'qty' => 1,
-                    'width' => (self::BLOCK_SIZE * 5),
-                    'height' => (self::BLOCK_SIZE * 5)
-                ],
-                [
-                    'qty' => 2,
-                    'width' => (self::BLOCK_SIZE * 3),
-                    'height' => (self::BLOCK_SIZE * 3)
-                ],
-                [
-                    'qty' => 5,
-                    'width' => (self::BLOCK_SIZE * 2),
-                    'height' => (self::BLOCK_SIZE * 2)
-                ]
-            ];
         }
     }
 
