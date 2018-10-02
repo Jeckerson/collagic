@@ -90,7 +90,7 @@ class Collagic
         try {
             $this->collage = new Imagick();
         } catch (\ImagickException $e) {
-            exit ($e->getMessage());
+            exit($e->getMessage());
         }
 
         // Set name
