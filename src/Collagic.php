@@ -82,8 +82,8 @@ class Collagic
     /**
      * Constructor
      *
-     * @param string $name
-     * @param array $modes
+     * @param string $name Output collage filename (with extension)
+     * @param array $modes Modes of specified sizes and respective quantity
      */
     public function __construct($name = '', array $modes = [])
     {
@@ -136,7 +136,7 @@ class Collagic
     /**
      * Set Modes array
      *
-     * @param array $modes
+     * @param array $modes Modes of specified sizes and respective quantity
      * @return void
      */
     public function setModes($modes)
@@ -145,7 +145,7 @@ class Collagic
     }
 
     /**
-     * @param array $files
+     * @param array $files array of images paths
      * @return bool
      * @throws \ImagickException
      */
@@ -295,7 +295,7 @@ class Collagic
     }
 
     /**
-     * @param array $list
+     * @param array $list List of image paths
      * @return array
      */
     public function shuffleAssoc(array $list)
@@ -311,7 +311,7 @@ class Collagic
     }
 
     /**
-     * @param array $files
+     * @param array $files List of image paths
      * @return int
      */
     public function getFileKey($files)
@@ -320,7 +320,7 @@ class Collagic
     }
 
     /**
-     * @param int|float $width
+     * @param int|float $width Width of image block
      * @return int
      */
     public function randomRow($width)
@@ -329,7 +329,7 @@ class Collagic
     }
 
     /**
-     * @param int|float $height
+     * @param int|float $height Height of image block
      * @return int
      */
     public function randomCol($height)
@@ -338,9 +338,9 @@ class Collagic
     }
 
     /**
-     * @param int $cells
-     * @param int $x
-     * @param int $y
+     * @param int $cells Array of chess-like cells
+     * @param int $x Position of X
+     * @param int $y Position of Y
      * @return bool
      */
     public function fitGrid($cells, $x, $y)
@@ -357,10 +357,10 @@ class Collagic
     }
 
     /**
-     * @param integer $x
-     * @param integer $y
-     * @param integer $rows
-     * @param integer $cols
+     * @param integer $x Position of X
+     * @param integer $y Position of Y
+     * @param integer $rows Array of rows (X)
+     * @param integer $cols Array of cols (Y)
      * @return void
      */
     public function fillGrid($x, $y, $rows, $cols = 0)
@@ -385,9 +385,9 @@ class Collagic
     }
 
     /**
-     * @param Imagick $image
-     * @param int $row
-     * @param int $col
+     * @param Imagick $image Collage object
+     * @param int $row Row grid position
+     * @param int $col Col grid position
      * @return void
      */
     protected function setImage($image, $row, $col)
@@ -406,11 +406,11 @@ class Collagic
     }
 
     /**
-     * @param int $id
-     * @param int $row
-     * @param int $col
-     * @param int $width
-     * @param int $height
+     * @param int $id Numeric key of array
+     * @param int $row Row grid position
+     * @param int $col Col grid position
+     * @param int $width Block width
+     * @param int $height Block height
      * @return void
      */
     protected function savePosition($id, $row, $col, $width, $height)
