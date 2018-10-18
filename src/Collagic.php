@@ -33,7 +33,7 @@ class Collagic
      *
      * @var string
      */
-    protected $name;
+    protected $name = '';
 
     /**
      * Image object
@@ -147,7 +147,6 @@ class Collagic
     /**
      * @param array $files array of images paths
      * @return bool
-     * @throws \ImagickException
      */
     public function generate($files)
     {
@@ -161,119 +160,21 @@ class Collagic
 
         // Shuffle
         $files = $this->shuffleAssoc($files);
-
         // Create new blank Collage (COLLAGE_WIDTH x COLLAGE_HEIGHT)
         $this->collage->newImage(self::COLLAGE_WIDTH, self::COLLAGE_HEIGHT, new ImagickPixel('#000'));
-
-        // Primary Modes
-        foreach ($this->modes as $mode) {
-            for ($a = 0; $a < $mode['qty']; $a++) {
-                if (empty($files)) {
-                    return $this->save();
-                }
-
-                $cells = intval(ceil($mode[self::MODE_KEY_WIDTH] / self::BLOCK_SIZE));
-
-                // Random row and col
-                $row = $this->randomRow($mode[self::MODE_KEY_WIDTH]);
-                $col = $this->randomCol($mode[self::MODE_KEY_HEIGHT]);
-                while (!$this->fitGrid($cells, $row, $col)) {
-                    $row = $this->randomRow($mode[self::MODE_KEY_WIDTH]);
-                    $col = $this->randomCol($mode[self::MODE_KEY_HEIGHT]);
-                }
-
-                $id = $this->getFileKey($files);
-
-                $image = new Imagick($files[$id]);
-                $image->resizeImage(
-                    $mode[self::MODE_KEY_WIDTH],
-                    $mode[self::MODE_KEY_HEIGHT],
-                    Imagick::FILTER_UNDEFINED,
-                    1
-                );
-
-                $this->setImage($image, $row, $col);
-                $this->savePosition($id, $row, $col, $mode[self::MODE_KEY_WIDTH], $mode[self::MODE_KEY_HEIGHT]);
-
-                // Fill Grid
-                $this->fillGrid($row, $col, $cells);
-                // Free memory
-                unset($image, $files[$id]);
-            }
-        }
-
-        // -------------------------------------------------
-
-        $files = $this->shuffleAssoc($files);
-
-        // Apply Rectangles on the Grid
-        foreach ($this->grid as $col => $rows) {
-            foreach ($rows as $row => $bool) {
-                // Skip filled
-                if ($bool == 1) {
-                    continue;
-                }
-
-                if (empty($files)) {
-                    return $this->save();
-                }
-
-                $id = $this->getFileKey($files);
-                $image = new Imagick($files[$id]);
-                if ($image->getImageWidth() > $image->getImageHeight() && $this->grid[$col][$row + 1] == 0) {
-                    // Horizontal
-                    $width = self::BLOCK_SIZE * 2;
-                    $height = self::BLOCK_SIZE;
-                    $image->resizeImage($width, $height, Imagick::FILTER_UNDEFINED, 1);
-                } elseif ($image->getImageWidth() < $image->getImageHeight() && $this->grid[$col + 1][$row] == 0) {
-                    // Vertical
-                    $width = self::BLOCK_SIZE;
-                    $height = self::BLOCK_SIZE * 2;
-                    $image->resizeImage($width, $height, Imagick::FILTER_UNDEFINED, 1);
-                } else {
-                    // Not enough space
-                    continue;
-                }
-
-                $this->savePosition($id, $row, $col, $width, $height);
-                $this->setImage($image, $row, $col);
-
-                // Fill Grid
-                $gridRows = intval(ceil($image->getImageWidth() / self::BLOCK_SIZE));
-                $gridCols = intval(ceil($image->getImageHeight() / self::BLOCK_SIZE));
-                $this->fillGrid($row, $col, $gridRows, $gridCols);
-
-                // Free memory
-                unset($image, $files[$id]);
-            }
-        }
-
-        // -------------------------------------------------
-
-        $files = $this->shuffleAssoc($files);
-
-        // Apply Squares on the Grid
-        foreach ($this->grid as $col => $rows) {
-            foreach ($rows as $row => $bool) {
-                // Skip filled
-                if ($bool == 1) {
-                    continue;
-                }
-
-                if (empty($files)) {
-                    return $this->save();
-                }
-
-                $id = $this->getFileKey($files);
-                $image = new Imagick($files[$id]);
-                $image->resizeImage(self::BLOCK_SIZE, self::BLOCK_SIZE, Imagick::FILTER_UNDEFINED, 1);
-
-                $this->savePosition($id, $row, $col, self::BLOCK_SIZE, self::BLOCK_SIZE);
-                $this->setImage($image, $row, $col);
-
-                // Free memory
-                unset($image, $files[$id]);
-            }
+        try {
+            // Primary Modes
+            $this->applyPrimaryImages($files);
+            // Shuffle
+            $files = $this->shuffleAssoc($files);
+            // Apply Rectangles on the Grid
+            $this->applyRectangleImages($files);
+            // Shuffle
+            $files = $this->shuffleAssoc($files);
+            // Apply Squares on the Grid
+            $this->applySquareImages($files);
+        } catch (\ImagickException $exception) {
+            exit('Failed to init Imagick image.' . PHP_EOL . $exception->getTraceAsString());
         }
 
         // Collage Image is fulfilled
@@ -382,6 +283,134 @@ class Collagic
     public function getImages()
     {
         return $this->images;
+    }
+
+    /**
+     * @param array $files
+     * @return void
+     * @throws \ImagickException
+     */
+    protected function applyPrimaryImages(array &$files)
+    {
+        foreach ($this->modes as $mode) {
+            for ($a = 0; $a < $mode['qty']; $a++) {
+                if (empty($files)) {
+                    break;
+                }
+
+                $cells = intval(ceil($mode[self::MODE_KEY_WIDTH] / self::BLOCK_SIZE));
+
+                // Random row and col
+                $row = $this->randomRow($mode[self::MODE_KEY_WIDTH]);
+                $col = $this->randomCol($mode[self::MODE_KEY_HEIGHT]);
+                while (!$this->fitGrid($cells, $row, $col)) {
+                    $row = $this->randomRow($mode[self::MODE_KEY_WIDTH]);
+                    $col = $this->randomCol($mode[self::MODE_KEY_HEIGHT]);
+                }
+
+                $id = $this->getFileKey($files);
+                $image = new Imagick($files[$id]);
+                $image->resizeImage(
+                    $mode[self::MODE_KEY_WIDTH],
+                    $mode[self::MODE_KEY_HEIGHT],
+                    Imagick::FILTER_UNDEFINED,
+                    1
+                );
+
+                $this->setImage($image, $row, $col);
+                $this->savePosition($id, $row, $col, $mode[self::MODE_KEY_WIDTH], $mode[self::MODE_KEY_HEIGHT]);
+
+                // Fill Grid
+                $this->fillGrid($row, $col, $cells);
+                // Free memory
+                unset($image, $files[$id]);
+            }
+        }
+    }
+
+    /**
+     * @param array $files
+     * @return void
+     * @throws \ImagickException
+     */
+    protected function applyRectangleImages(array &$files)
+    {
+        foreach ($this->grid as $col => $rows) {
+            foreach ($rows as $row => $bool) {
+                // Skip filled
+                if ($bool == 1) {
+                    continue;
+                }
+
+                if (empty($files)) {
+                    break;
+                }
+
+                $id = $this->getFileKey($files);
+                $image = new Imagick($files[$id]);
+                if ($image->getImageWidth() > $image->getImageHeight() && $this->grid[$col][$row + 1] == 0) {
+                    // Horizontal
+                    $width = self::BLOCK_SIZE * 2;
+                    $height = self::BLOCK_SIZE;
+                } elseif ($image->getImageWidth() < $image->getImageHeight() && $this->grid[$col + 1][$row] == 0) {
+                    // Vertical
+                    $width = self::BLOCK_SIZE;
+                    $height = self::BLOCK_SIZE * 2;
+                } else {
+                    // Not enough space
+                    continue;
+                }
+
+                $image->resizeImage($width, $height, Imagick::FILTER_UNDEFINED, 1);
+
+                $this->savePosition($id, $row, $col, $width, $height);
+                $this->setImage($image, $row, $col);
+
+                // Fill Grid
+                $gridRows = intval(ceil($image->getImageWidth() / self::BLOCK_SIZE));
+                $gridCols = intval(ceil($image->getImageHeight() / self::BLOCK_SIZE));
+                $this->fillGrid(
+                    $row,
+                    $col,
+                    $gridRows,
+                    $gridCols
+                );
+
+                // Free memory
+                unset($image, $files[$id]);
+            }
+        }
+    }
+
+    /**
+     * @param array $files
+     * @return void
+     * @throws \ImagickException
+     */
+    protected function applySquareImages(array &$files)
+    {
+        foreach ($this->grid as $col => $rows) {
+            foreach ($rows as $row => $bool) {
+                // Skip filled
+                if ($bool == 1) {
+                    continue;
+                }
+
+                if (empty($files)) {
+                    break;
+                }
+
+                $id = $this->getFileKey($files);
+                $image = new Imagick($files[$id]);
+                $image->resizeImage(self::BLOCK_SIZE, self::BLOCK_SIZE, Imagick::FILTER_UNDEFINED, 1);
+
+                $this->savePosition($id, $row, $col, self::BLOCK_SIZE, self::BLOCK_SIZE);
+                $this->setImage($image, $row, $col);
+
+                // Free memory
+                unset($image, $files[$id]);
+            }
+        }
     }
 
     /**
