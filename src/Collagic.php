@@ -115,7 +115,7 @@ class Collagic
     /**
      * Set file Name
      *
-     * @param string $name Output file name
+     * @param mixed $name Output file name
      * @return void
      */
     public function setName($name)
@@ -136,12 +136,12 @@ class Collagic
     /**
      * Set Modes array
      *
-     * @param array $modes Modes of specified sizes and respective quantity
+     * @param mixed $modes Modes of specified sizes and respective quantity
      * @return void
      */
     public function setModes($modes)
     {
-        $this->modes = (array)$modes;
+        $this->modes = is_array($modes) && !empty($modes) ? $modes : [];
     }
 
     /**
