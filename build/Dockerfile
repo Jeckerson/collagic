@@ -7,6 +7,7 @@ RUN apk update && apk add git \
         php7-json \
         php7-phar \
         php7-iconv \
+        php7-mbstring \
         php7-simplexml \
         php7-tokenizer \
         php7-xmlwriter \
