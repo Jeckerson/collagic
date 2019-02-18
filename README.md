@@ -5,4 +5,4 @@ Generates images into single collage image.
 
 ## Example
 
-TODO
+![1200x600](examples/1200x600.jpg)
