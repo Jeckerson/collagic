@@ -1,6 +1,7 @@
 {
   "require": {
-    "symfony/console": "3.4.x-dev"
+    "symfony/console": "3.4.x-dev",
+    "ext-imagick": "*"
   },
   "require-dev": {
     "squizlabs/php_codesniffer": "^3.3",
