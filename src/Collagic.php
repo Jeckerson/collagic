@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Collagic;
 
@@ -10,11 +10,11 @@ use ImagickPixel;
  */
 class Collagic
 {
-    const BLOCK_SIZE = 38;
-    const COLLAGE_WIDTH = 1140;
-    const COLLAGE_HEIGHT = 418;
-    const COLLAGE_ROWS = 30;
-    const COLLAGE_COLS = 11;
+    const BLOCK_SIZE = 75;
+    const COLLAGE_WIDTH = 1200;
+    const COLLAGE_HEIGHT = 600;
+    const COLLAGE_ROWS = 16;
+    const COLLAGE_COLS = 8;
     const DEFAULT_NAME = 'collage.jpg';
 
     const MODE_KEY_QTY = 'qty';
